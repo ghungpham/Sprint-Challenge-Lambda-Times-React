@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import Tabs from './Tabs';
 import Cards from './Cards';
 
@@ -19,8 +18,8 @@ export default class Content extends Component {
   componentDidMount() {
     // Once the component has mounted, get the data and reflect that data on the state.
    this.setState({
-    cards: cardData,
-    tabs: tabData
+      tabs: tabData,
+      cards: cardData
    })
 
   }
@@ -28,7 +27,7 @@ export default class Content extends Component {
   changeSelected = tab => {
     // this function should take in the tab and update the state with the new tab.
     this.setState ({
-      tabs : tab
+      selected : tab
     })
 
   };
@@ -46,13 +45,11 @@ export default class Content extends Component {
           of the items from cardData. 
         - else, it should only return those cards whose 'tab' matched this.state.selected.
     */
-  //  let cards = this.state.cards
-  //   if (this.state.selected === 'all'){this.setState({cards})}
-  //   else {
-  //     let selectedcards =cards.filter(card => card.tab === this.state.tabs )
-  //     this.setState(selectedcards)}
-return this.state.cards 
+   let filteredCards = this.state.cards.slice().filter(card => {
+    return card.tab === this.state.selected;})   
+    return (this.state.selected === 'all' ? this.state.cards: filteredCards);
 };
+
 
   render() {
     return (
@@ -62,7 +59,9 @@ return this.state.cards
           `selectedTab` that includes the currently selected tab
           and `selectTabHandler` that includes the function to change the selected tab
         */}
-        <Tabs tabs={this.state.tabs} selectedTab={this.state.selected} selectedTabHandler={this.changeSelected} />
+        <Tabs tabs={this.state.tabs} 
+        selectedTab={this.state.selected} 
+        selectedTabHandler={this.changeSelected} />
         <Cards cards={this.filterCards()} />
       </div>
     );
